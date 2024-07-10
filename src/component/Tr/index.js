@@ -23,8 +23,16 @@ function Tr({ editId, item, editText, setEditText, handleEditUpdate, handleEdit,
         return () => clearInterval(intervalId.current);
     }, [item.status])
 
-    function handleDelete(id) {
-        dispatch(remove_item(id))
+    function handleDelete(item) {
+
+        if(item.status === "Ongoing")
+        {
+            alert("Please Pause or End the task first");
+        }
+        else
+        {
+            dispatch(remove_item(item.id));
+        }
     }
     return (
         <motion.tr initial={{ opacity: 0, y: 20 }}
@@ -57,7 +65,7 @@ function Tr({ editId, item, editText, setEditText, handleEditUpdate, handleEdit,
 
 
 
-            <td><RiDeleteBinLine style={{ color: "red", transform: "scale(1.25)", cursor: "pointer" }} onClick={() => handleDelete(item.id)} /></td>
+            <td><RiDeleteBinLine style={{ color: "red", transform: "scale(1.25)", cursor: "pointer" }} onClick={() => handleDelete(item)} /></td>
         </motion.tr>
     )
 }
