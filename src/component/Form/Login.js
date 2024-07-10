@@ -16,9 +16,15 @@ const Login = () => {
             return;
         }
         else {
-            navigate("/todo");
-            setEmail("");
-            setPassword("");
+            const data = JSON.parse(localStorage.getItem("userData")) || [];
+            const user = data.find((user) => user.email === email && user.password === password);
+
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                navigate('/todo');
+            } else {
+                alert('Invalid email or password');
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './form.css';
 
@@ -7,17 +7,13 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [cPassword, setCPassword] = useState("");
-
     const navigate = useNavigate();
+
 
     function handleForm(event) {
         event.preventDefault();
 
         if (!name || !email || !password || !cPassword) {
-            console.log(name);
-            console.log(email)
-            console.log(password);
-            console.log(cPassword);
             alert("Please Fill all the fields");
             return;
         }
@@ -26,11 +22,22 @@ const Signup = () => {
             return;
         }
         else {
-            navigate("/todo");
-            setName("");
-            setEmail("");
-            setPassword("");
-            setCPassword("");
+            const data = JSON.parse(localStorage.getItem("userData")) || [];
+            const userExists = data.some((user) => user.email === email);
+            if(userExists)
+            {
+                alert("User already exists");
+            }
+            else
+            {
+                const newUser = {
+                    email, password
+                }
+                data.push(newUser);
+                localStorage.setItem("userData", JSON.stringify(data));
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
+                navigate("/todo");
+            }
         }
 
     }

@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./style.css"
 import { useSelector, useDispatch } from 'react-redux';
 import { add_item, edit_item, remove_item } from "../../redux/actions/todoAction";
 import Tr from '../Tr';
 
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom';
 
 
 function Todo() {
@@ -17,6 +18,17 @@ function Todo() {
     const [editText, setEditText] = useState("");
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+
+        if(!user)
+        {
+          navigate("/login");
+          alert("Please Login or Signup");
+        }
+    })
 
     function handleAdd(e) {
         e.preventDefault();
